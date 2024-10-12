@@ -214,7 +214,7 @@ def transform_label_into_ppocr_rec_form(xml_file):
             
         for word in words:
             word_range = word["@attributes"]
-            x, y, w, h = word_range["x"], word_range["y"], word_range["width"], word_range["height"]
+            x, y, w, h = int(word_range["x"]), int(word_range["y"]), int(word_range["width"]), int(word_range["height"])
             word_range = [[x, y], [x+w, y], [x+w, y+h], [x, y+h]]
             
             if "character" not in word:
@@ -230,19 +230,17 @@ def transform_label_into_ppocr_rec_form(xml_file):
         return None
 
 
-def make_pporc_det_label(label_file_path = Path("./datasets/KAIST/label.txt")):
-    inspect_report = inspect_label(print_report=False, return_report=True)
+def make_pporc_det_label(dataset_dir = Path("datasets/KAIST"), label_file_path = Path("./datasets/KAIST/label.txt"), extension="png"):
+    inspect_report = inspect_label(dataset_dir = dataset_dir, print_report=False, return_report=True)
     file_path_list = inspect_report[XML_STATE.NO_ERROR] + inspect_report[XML_STATE.PARTIALLY_NO_CHARACTER]
     
     if label_file_path.exists():
-        label_file_path.unlink()
-    
-    labels = list()
+        label_file_path.unlink()    
 
     with open(label_file_path, "a") as f:
         for file_path in file_path_list:
             label = transform_label_into_ppocr_rec_form(file_path)
-            file_path = str(file_path).replace("\\", "/")
+            file_path = str(file_path.relative_to(dataset_dir).with_suffix(extension)).replace("\\", "/")
             label = json.dumps(label, ensure_ascii=False)
             f.write(f"{file_path}\t{label}\n")
     
