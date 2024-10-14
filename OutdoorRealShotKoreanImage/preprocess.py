@@ -1,3 +1,3 @@
-from core import OutdoorRealShotKoreanImageDatasetPreprocesser
+from core import OutdoorRealShotKoreanImage_Preprocesser
 
-OutdoorRealShotKoreanImageDatasetPreprocesser.preprocess()
+OutdoorRealShotKoreanImage_Preprocesser().preprocess()

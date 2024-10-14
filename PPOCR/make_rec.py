@@ -6,7 +6,7 @@ import tqdm
 IGNORE_TEXT = ["(한자)", "((한자))", "(((한자)))", "(일본어)", "((일본어))", "(((일본어)))", "(외국어)","((외국어))","(((외국어)))",  "(영어)", "((영어))", "(((영어)))", "xx", "xxx", "xxxx", "xxxxx", "XX", "XXX", "XXXX", "XXXXX"]
 IGNORE_MASK = ["xx", "xxx", "xxxx", "xxxxx", "XX", "XXX", "XXXX", "XXXXX"]
 
-def test_check(text):
+def text_check(text):
     # 쓸 수 있는 test(trascription) 인지 체크하여 T, F로 반환
     if text in IGNORE_TEXT: # 금지된 텍스트에 해당하면 탈락
         return False
@@ -46,7 +46,7 @@ def make_ppocr_rec_dataset_from_ppocr_det_dataset(datadir, target_datadir):
             # Image.open(datadir/image).show()
             for label in labels:
                 
-                if test_check(label["transcription"]):
+                if text_check(label["transcription"]):
                     polygon = label["points"]
                     image = Image.open(datadir/image_path)
                     cropped_image = crop_by_polygon(image, polygon)

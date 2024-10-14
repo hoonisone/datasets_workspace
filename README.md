@@ -13,3 +13,26 @@
 | Source        | Name                       | Work       | Label format                              |
 |---------------|----------------------------|------------|-------------------------------------------|
 |               | PPOCR                       | STR, STD  | [label format](./PPOCR/label_format.md)    |
+
+# Dataset Management Class
+
+A deep learning dataset generally consists of samples composed of `x` (data) and `y` (label). Datasets vary in structure across different domains, so transforming datasets into the appropriate format is often necessary to apply them in any domain.
+
+We propose an abstract dataset class to address this need.
+
+## Dataset Class Overview
+
+| Class     | Usage                                              |
+|-----------|----------------------------------------------------|
+| `Dataset` | Implemented for each specific dataset              |
+| `Converter` | Implemented to transform datasets between domains |
+
+## Example
+
+- We have a dataset 'A' in domain (format) `α`.
+- We want to transform dataset 'A' into domain `β`.
+- Steps:
+    1. Implement the `Dataset` class for dataset 'A'.
+    2. Implement the `Converter` class to transform data from domain `α` to domain `β`.
+
+- This approach provides high efficiency in handling combinations between datasets and domains.

@@ -5,7 +5,7 @@ from pathlib import Path
 from tools.dataset import Dataset_Loader, Dataset_Converter
 from tools.config_loader import YamlConfigLoader
 
-CONFIG_PATH = Path(__file__).resolve().parent/"config/main_config.yml"
+CONFIG_PATH = Path(__file__).resolve().parent/"config.yml"
 
 class OutdoorRealShotKoreanImage_Preprocesser:
     """
@@ -97,7 +97,8 @@ class OutdoorRealShotKoreanImage_Preprocesser:
         self.unzip() # root 내에 모든 zip 파일 압축 해제
         
         print(f"(2/{n}) 남아있는 모든 zip 파일 제거")#######################################################
-        self.clean_zip() # 남아있는 모든 zip 파일 제거
+        # self.clean_zip() # 남아있는 모든 zip 파일 제거
+        # 1번이 정상 작동 한 경우에만 실행할 것
         
         print(f"(3/{n}) 새롭게 디렉터리 구조화 (경로 정리)")#######################################################
         self.newly_organize() # 새롭게 디렉터리 구조화 (경로 정리)

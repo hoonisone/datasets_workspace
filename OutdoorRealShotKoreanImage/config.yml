@@ -1,6 +1,8 @@
 SUPPORTED:
 
-dataset_dir: W:\Datasets\AIHUB\korean_image
+# dataset_dir: W:\Datasets\AIHUB\korean_image
+
+dataset_dir: W:\OutdoorRealShotKoreanImage
 
 x_ext: jpg
 y_ext: json
