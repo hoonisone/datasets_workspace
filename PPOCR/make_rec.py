@@ -28,6 +28,7 @@ def get_new_image_path(i, dir_size = 1000, extension=".png"):
 def make_ppocr_rec_dataset_from_ppocr_det_dataset(datadir, target_datadir):
     
     label_file = datadir/"label.txt"
+    target_label_detail_file = target_datadir/"label_detail.txt"
     target_label_file = target_datadir/"label.txt"
     
     with open(label_file, encoding="utf-8") as f:
@@ -41,24 +42,28 @@ def make_ppocr_rec_dataset_from_ppocr_det_dataset(datadir, target_datadir):
     
     target_label_file.parent.mkdir(parents=True, exist_ok=True)
     
-    with open(target_label_file, "a", encoding="utf-8") as f:
-        for i, (image_path, labels) in tqdm.tqdm(enumerate(zip(image_paths, labels))):
-            # Image.open(datadir/image).show()
-            for label in labels:
-                
-                if text_check(label["transcription"]):
-                    polygon = label["points"]
-                    image = Image.open(datadir/image_path)
-                    cropped_image = crop_by_polygon(image, polygon)
-                    new_label = dict(label)
-                    new_label["source_image"] = image_path
+    img_num = 0
+    with open(target_label_file, "a", encoding="utf-8") as f1:
+        with open(target_label_detail_file, "a", encoding="utf-8") as f:
+            for i, (image_path, labels) in tqdm.tqdm(enumerate(zip(image_paths, labels))):
+                # Image.open(datadir/image).show()
+                for label in labels:
                     
-                    new_image_path = get_new_image_path(i)
-                    (target_datadir/new_image_path).parent.mkdir(parents=True, exist_ok=True)
+                    if text_check(label["transcription"]):
+                        polygon = label["points"]
+                        image = Image.open(datadir/image_path)
+                        cropped_image = crop_by_polygon(image, polygon)
+                        new_label = dict(label)
+                        new_label["source_image"] = image_path
+                        
+                        new_image_path = get_new_image_path(img_num)
+                        (target_datadir/new_image_path).parent.mkdir(parents=True, exist_ok=True)
 
-                    cropped_image.save(target_datadir/new_image_path)
-                    f.write(f"{new_image_path}\t{json.dumps(new_label, ensure_ascii=False)}\n")
+                        cropped_image.save(target_datadir/new_image_path)
+                        f.write(f"{new_image_path}\t{json.dumps(new_label, ensure_ascii=False)}\n")
+                        img_num += 1
+                        f1.write(f"{new_image_path}\t{label['transcription']}\n")
 
-            target_datadir
+                target_datadir
             
             
